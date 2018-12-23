@@ -24,6 +24,7 @@ def send_data(socket, data):
     if msg == "READY":
         print("CLIENT CONFIRMED READY")
         socket.send(bytes(str(data), 'utf-8'))
+        print("SENT", data)
 
 def recv_data(socket):
     msg = None
