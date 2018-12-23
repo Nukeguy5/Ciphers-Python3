@@ -18,7 +18,7 @@ def send_data(socket, data):
     socket.send(bytes("SENDING", 'utf-8'))
     msg = socket.recv(1024).decode('utf-8')
     if msg == "READY":
-        print("CLIENT CONFIRMED READY")
+        print("CLIENT READY TO RECEIVE")
         print(f'SENDING {data}')
         socket.send(bytes(str(data), 'utf-8'))
         print("SENT", data)
