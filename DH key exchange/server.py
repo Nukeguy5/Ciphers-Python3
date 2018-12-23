@@ -15,26 +15,21 @@ prime = 101723
 gen = random.randint(100000, 999999)
 
 def send_data(socket, data):
-    msg = "SENDING %s" % data
-    print(msg)
     socket.send(bytes("SENDING", 'utf-8'))
-    msg = None
-    
     msg = socket.recv(1024).decode('utf-8')
     if msg == "READY":
         print("CLIENT CONFIRMED READY")
+        print(f'SENDING {data}')
         socket.send(bytes(str(data), 'utf-8'))
         print("SENT", data)
         print()
 
 def recv_data(socket):
-    msg = None
     print("Waiting on response...")
     msg = socket.recv(1024).decode('utf-8')    
     if msg == "SENDING":
-        msg = "READY"
-        print(msg)
-        socket.send(bytes(msg, 'utf-8'))
+        print("READY TO RECEIVE")
+        socket.send(bytes("READY", 'utf-8'))
         data = socket.recv(1024).decode('utf-8')
         print("RECEIVED", data)
         print()
@@ -46,9 +41,9 @@ def create_pub_key(priv_key, prime, gen):
 
 def calc_shared_secret(socket, priv_key, prime):
     s_pub_key = create_pub_key(priv_key, prime, gen)
-    c_pub_key = int(recv_data(conn))
-    send_data(conn, s_pub_key)
-    shared_secret = (c_pub_key**priv_key) % prime
+    c_pub_key = int(recv_data(conn))  # recv client public key
+    send_data(conn, s_pub_key)  # send server public key
+    shared_secret = (c_pub_key**priv_key) % prime  # mathimatical function
     return shared_secret
 
 if __name__ == '__main__':
@@ -57,10 +52,12 @@ if __name__ == '__main__':
     print(f'Prime: {prime}')
     print(f'Generator: {gen}')
     print('-'*24)
+
+    # Send initial values
     conn, (ip, port) = sock.accept()
     send_data(conn, prime)
     send_data(conn, gen)
 
     result = calc_shared_secret(conn, priv_key, prime)
     print('-'*24)
-    print(f'Result: {result}')
+    print(f'Shared Key: {result}')
