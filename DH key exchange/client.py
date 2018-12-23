@@ -2,7 +2,7 @@
 import socket
 import random
 
-priv_key = random.randint(1000, 9999)
+priv_key = random.randint(100000, 999999)
 sock = socket.socket()
 ip = '127.0.0.1'
 port = 12345
@@ -21,6 +21,7 @@ def send_data(socket, data):
         print("SERVER CONFIRMED READY")
         socket.send(bytes(str(data), 'utf-8'))
         print("SENT", data)
+        print()
 
 def recv_data(socket):
     msg = None
@@ -32,6 +33,7 @@ def recv_data(socket):
         socket.send(bytes(msg, 'utf-8'))
         data = socket.recv(1024).decode('utf-8')
         print("RECEIVED", data)
+        print()
         return data
 
 def create_pub_key(priv_key, prime, gen):
@@ -46,10 +48,12 @@ def calc_shared_secret(socket, priv_key, prime):
     return shared_secret
 
 if __name__ == '__main__':
+    print('-'*24)
     print(f'Private Key: {priv_key}')
+    print('-'*24)
     prime = int(recv_data(sock))
     gen = int(recv_data(sock))
     
     result = calc_shared_secret(sock, priv_key, prime)
-    print(result)
+    print(f'Result: {result}')
     sock.close()

@@ -2,7 +2,7 @@
 import socket
 import random
 
-priv_key = random.randint(1000, 9999)
+priv_key = random.randint(100000, 999999)
 sock = socket.socket()
 port = 12345
 
@@ -11,8 +11,8 @@ sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 sock.bind(('', 12345))
 sock.listen(1)
 
-prime = 13
-gen = random.randint(1000, 9999)
+prime = 101723
+gen = random.randint(100000, 999999)
 
 def send_data(socket, data):
     msg = "SENDING %s" % data
@@ -25,6 +25,7 @@ def send_data(socket, data):
         print("CLIENT CONFIRMED READY")
         socket.send(bytes(str(data), 'utf-8'))
         print("SENT", data)
+        print()
 
 def recv_data(socket):
     msg = None
@@ -36,6 +37,7 @@ def recv_data(socket):
         socket.send(bytes(msg, 'utf-8'))
         data = socket.recv(1024).decode('utf-8')
         print("RECEIVED", data)
+        print()
         return data
 
 def create_pub_key(priv_key, prime, gen):
@@ -50,12 +52,15 @@ def calc_shared_secret(socket, priv_key, prime):
     return shared_secret
 
 if __name__ == '__main__':
+    print('-'*24)
     print(f'Private Key: {priv_key}')
     print(f'Prime: {prime}')
     print(f'Generator: {gen}')
+    print('-'*24)
     conn, (ip, port) = sock.accept()
     send_data(conn, prime)
     send_data(conn, gen)
 
     result = calc_shared_secret(conn, priv_key, prime)
-    print(result)
+    print('-'*24)
+    print(f'Result {result}')
