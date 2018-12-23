@@ -52,7 +52,6 @@ if __name__ == '__main__':
     print(f'Private Key: {priv_key}')
     print(f'Prime: {prime}')
     print(f'Generator: {gen}')
-    print()
     conn, (ip, port) = sock.accept()
     send_data(conn, prime)
     send_data(conn, gen)

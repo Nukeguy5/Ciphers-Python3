@@ -46,7 +46,6 @@ def calc_shared_secret(socket, priv_key, prime):
 
 if __name__ == '__main__':
     print(f'Private Key: {priv_key}')
-    print()
     prime = int(recv_data(sock))
     gen = int(recv_data(sock))
     
