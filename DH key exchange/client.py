@@ -61,3 +61,4 @@ if __name__ == '__main__':
 
     print('-'*24)
     print(f'Shared Key: {result}')
+    print('-'*24)
