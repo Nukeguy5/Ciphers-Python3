@@ -41,7 +41,10 @@ def create_pub_key(priv_key, prime, gen):
     s_pub_key = gen**priv_key % prime
     return s_pub_key
 
-def calc_shared_secret(socket, priv_key, c_pub_key, prime):
+def calc_shared_secret(socket, priv_key, prime):
+    s_pub_key = create_pub_key(priv_key, prime, gen)
+    c_pub_key = int(recv_data(conn))
+    send_data(conn, s_pub_key)
     shared_secret = (c_pub_key**priv_key) % prime
     return shared_secret
 
@@ -53,9 +56,6 @@ if __name__ == '__main__':
     conn, (ip, port) = sock.accept()
     send_data(conn, prime)
     send_data(conn, gen)
-    s_pub_key = create_pub_key(priv_key, prime, gen)
-    c_pub_key = int(recv_data(conn))
-    send_data(conn, s_pub_key)
 
-    result = calc_shared_secret(conn, priv_key, c_pub_key, prime)
+    result = calc_shared_secret(conn, priv_key, prime)
     print(result)
