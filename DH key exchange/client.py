@@ -38,7 +38,7 @@ def calc_shared_secret(socket, priv_key):
     print(f'Connected to {ip}:{port}')
 
 	# Receive initial values
-    print("Receiving intial values...")
+    print("Receiving intial values...\n")
     prime = int(recv_data(sock))
     gen = int(recv_data(sock))
 
