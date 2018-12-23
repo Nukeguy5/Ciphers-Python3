@@ -63,4 +63,4 @@ if __name__ == '__main__':
 
     result = calc_shared_secret(conn, priv_key, prime)
     print('-'*24)
-    print(f'Result {result}')
+    print(f'Result: {result}')

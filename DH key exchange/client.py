@@ -55,5 +55,6 @@ if __name__ == '__main__':
     gen = int(recv_data(sock))
     
     result = calc_shared_secret(sock, priv_key, prime)
+    print('-'*24)
     print(f'Result: {result}')
     sock.close()
