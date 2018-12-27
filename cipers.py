@@ -1,78 +1,115 @@
 
 class AtbashCiper:
     
-    alpha = 'abcdefghijklmnopqrstuvwxyz'
-    reverse_alpha = ''.join(reversed(alpha))
+    ALPHA = 'abcdefghijklmnopqrstuvwxyz'
+    REVERSE_ALPHA = ''.join(reversed(ALPHA))
 
     @classmethod
-    def encrypt(cls, og_str):
-        encrypted_str = ''
-        for char in og_str:
-            idx = AtbashCiper.alpha.index(char)
-            encrypted_str += AtbashCiper.reverse_alpha[idx]
+    def encrypt(cls, message):
+        encrypted_message = ''
+        for char in message:
+            idx = AtbashCiper.ALPHA.index(char)
+            encrypted_message += AtbashCiper.REVERSE_ALPHA[idx]
 
-        return encrypted_str
+        return encrypted_message
 
     @classmethod
-    def decrypt(cls, encrypted_str):
-        decrypted_str = ''
-        for char in encrypted_str:
-            idx = AtbashCiper.reverse_alpha.index(char)
-            decrypted_str += AtbashCiper.alpha[idx]
+    def decrypt(cls, encrypted_message):
+        decrypted_message = ''
+        for char in encrypted_message:
+            idx = AtbashCiper.REVERSE_ALPHA.index(char)
+            decrypted_message += AtbashCiper.ALPHA[idx]
 
-        return decrypted_str
+        return decrypted_message
 
 
 class CaesarCiper:
     
-    alpha = 'abcdefghijklmnopqrstuvwxyz'
+    ALPHA = 'abcdefghijklmnopqrstuvwxyz'
 
     @classmethod
-    def encrypt(cls, og_str, shift):
+    def encrypt(cls, message, shift):
         encrypted_alpha = CaesarCiper.shift_alpha(shift)
-        encrypted_str = ''
-        for char in og_str:
-            idx = CaesarCiper.alpha.index(char)
-            encrypted_str += encrypted_alpha[idx]
+        encrypted_message = ''
+        for char in message:
+            idx = CaesarCiper.ALPHA.index(char)
+            encrypted_message += encrypted_alpha[idx]
 
-        return encrypted_str
+        return encrypted_message
 
     @classmethod
-    def decrypt(cls, encrypted_str, shift):
+    def decrypt(cls, encrypted_message, shift):
         encrypted_alpha = CaesarCiper.shift_alpha(shift)
-        decrypted_str = ''
-        for char in encrypted_str:
+        decrypted_message = ''
+        for char in encrypted_message:
             idx = encrypted_alpha.index(char)
-            decrypted_str += CaesarCiper.alpha[idx]
+            decrypted_message += CaesarCiper.ALPHA[idx]
 
-        return decrypted_str 
+        return decrypted_message 
 
     @classmethod
     def shift_alpha(cls, shift):
-        encrypted_alpha = CaesarCiper.alpha[shift:] + CaesarCiper.alpha[:shift]
+        encrypted_alpha = CaesarCiper.ALPHA[shift:] + CaesarCiper.ALPHA[:shift]
         
         return encrypted_alpha
 
     @classmethod
-    def find_shift(cls, encrypted_str):
+    def find_shift(cls, encrypted_message):
         pass
 
 
 class Rot13:
 
-    shift = 13
+    SHIFT = 13
 
     @classmethod
-    def encrypt(cls, og_str):
-        shift = Rot13.shift
-        encrypted_sr = CaesarCiper.encrypt(og_str, shift)
-        
-        return encrypted_sr
+    def encrypt(cls, message):
+        encrypted_message = CaesarCiper.encrypt(message, Rot13.SHIFT)       
+        return encrypted_message
 
     @classmethod
-    def decrypt(cls, encrypted_str):
-        shift = Rot13.shift
-        decrypted_str = CaesarCiper.decrypt(encrypted_str, shift)
+    def decrypt(cls, encrypted_message):
+        decrypted_message = CaesarCiper.decrypt(encrypted_message, Rot13.SHIFT)
+        return decrypted_message
 
-        return decrypted_str
-        
+
+class VigenereCipherSimple:
+
+    ALPHA = 'abcdefghijklmnopqrstuvwxyz'
+
+    @classmethod
+    def encrypt(cls, message, key):
+        encrypted_message = ''
+        for m_char in message:
+            message_idx = message.index(m_char)
+            if message_idx < len(key):
+                k_char = key[message_idx]
+            else:
+                key_idx = message_idx % len(key)
+                k_char = key[key_idx]
+            new_char = VigenereCipherSimple.add_chars(m_char, k_char)
+            encrypted_message += new_char
+            
+        return encrypted_message
+
+    @classmethod
+    def decrypt(cls, encrypted_message, key):
+        decrypted_message = ''
+
+        return decrypted_message
+    
+    @classmethod
+    def add_chars(cls, m_char, k_char):
+        try:
+            alpha_length = len(VigenereCipherSimple.ALPHA)
+            m_char_idx = VigenereCipherSimple.ALPHA.index(m_char)
+            k_char_idx = VigenereCipherSimple.ALPHA.index(k_char)
+            new_idx = m_char_idx + k_char_idx
+            if new_idx > alpha_length:
+                new_idx -= alpha_length - 1  # Uses 0 as first num if 26 or more (matches index)
+            new_char = VigenereCipherSimple.ALPHA[new_idx]
+            return new_char
+
+        except ValueError:
+            print(f"Character {m_char} not in alphabet. Skipping addition...")
+            return m_char
