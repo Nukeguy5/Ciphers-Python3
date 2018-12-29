@@ -8,8 +8,12 @@ class AtbashCipher:
     def encrypt(cls, message):
         encrypted_message = ''
         for char in message:
-            idx = AtbashCipher.ALPHA.index(char.lower())
-            encrypted_message += AtbashCipher.REVERSE_ALPHA[idx]
+            try:
+                idx = AtbashCipher.ALPHA.index(char.lower())
+                encrypted_message += AtbashCipher.REVERSE_ALPHA[idx]
+            except ValueError:
+                print(f"Character '{char}' not in alphabet. Applying original...")
+                encrypted_message += char
 
         return encrypted_message
 
@@ -17,8 +21,12 @@ class AtbashCipher:
     def decrypt(cls, encrypted_message):
         decrypted_message = ''
         for char in encrypted_message:
-            idx = AtbashCipher.REVERSE_ALPHA.index(char.lower())
-            decrypted_message += AtbashCipher.ALPHA[idx]
+            try:
+                idx = AtbashCipher.REVERSE_ALPHA.index(char.lower())
+                decrypted_message += AtbashCipher.ALPHA[idx]
+            except ValueError:
+                print(f"Character '{char}' not in alphabet. Applying original...")
+                encrypted_message += char
 
         return decrypted_message
 
@@ -32,18 +40,18 @@ class CaesarCipher:
         encrypted_alpha = CaesarCipher.shift_alpha(shift)
         encrypted_message = ''
         for char in message:
-            idx = CaesarCipher.ALPHA.index(char)
-            encrypted_message += encrypted_alpha[idx]
+            try:
+                idx = CaesarCipher.ALPHA.index(char.lower())
+                encrypted_message += encrypted_alpha[idx]
+            except ValueError:
+                print(f"Character '{char}' not in alphabet. Applying original...")
+                encrypted_message += char
 
         return encrypted_message
 
     @classmethod
     def decrypt(cls, encrypted_message, shift):
-        encrypted_alpha = CaesarCipher.shift_alpha(shift)
-        decrypted_message = ''
-        for char in encrypted_message:
-            idx = encrypted_alpha.index(char)
-            decrypted_message += CaesarCipher.ALPHA[idx]
+        decrypted_message = CaesarCipher.encrypt(encrypted_message, -shift)
 
         return decrypted_message 
 
@@ -102,7 +110,7 @@ class VigenereCipherSimple:
     def add_chars(cls, m_char, k_char):
         try:
             alpha_length = len(VigenereCipherSimple.ALPHA)
-            m_char_idx = VigenereCipherSimple.ALPHA.index(m_char)
+            m_char_idx = VigenereCipherSimple.ALPHA.index(m_char.lower())
             k_char_idx = VigenereCipherSimple.ALPHA.index(k_char)
             new_idx = m_char_idx + k_char_idx
             if new_idx >= alpha_length:
@@ -111,5 +119,5 @@ class VigenereCipherSimple:
             return new_char
 
         except ValueError:
-            print(f"Character {m_char} not in alphabet. Skipping addition...")
+            print(f"Character '{m_char}' not in alphabet. Skipping addition...")
             return m_char
