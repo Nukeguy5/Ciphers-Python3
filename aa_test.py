@@ -1,4 +1,4 @@
-from cipers import CaesarCiper, AtbashCiper
+from cipers import CaesarCiper, AtbashCiper, VigenereCipherSimple
 string = 'hello'
 
 # Atbash Test
@@ -15,3 +15,7 @@ print(encrypted_str)
 
 decrypted_str = CaesarCiper.decrypt(encrypted_str, 5)
 print(decrypted_str)
+
+# Vigenere Test
+encrypted_str = VigenereCipherSimple.encrypt('sololearn', 'web')
+print(encrypted_str)

@@ -80,8 +80,9 @@ class VigenereCipherSimple:
     @classmethod
     def encrypt(cls, message, key):
         encrypted_message = ''
-        for m_char in message:
-            message_idx = message.index(m_char)
+        # for m_char in message:
+        for message_idx in range(len(message)):
+            m_char = message[message_idx]
             if message_idx < len(key):
                 k_char = key[message_idx]
             else:
@@ -105,8 +106,8 @@ class VigenereCipherSimple:
             m_char_idx = VigenereCipherSimple.ALPHA.index(m_char)
             k_char_idx = VigenereCipherSimple.ALPHA.index(k_char)
             new_idx = m_char_idx + k_char_idx
-            if new_idx > alpha_length:
-                new_idx -= alpha_length - 1  # Uses 0 as first num if 26 or more (matches index)
+            if new_idx >= alpha_length:
+                new_idx -= alpha_length
             new_char = VigenereCipherSimple.ALPHA[new_idx]
             return new_char
 
