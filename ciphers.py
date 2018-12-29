@@ -1,5 +1,5 @@
 
-class AtbashCiper:
+class AtbashCipher:
     
     ALPHA = 'abcdefghijklmnopqrstuvwxyz'
     REVERSE_ALPHA = ''.join(reversed(ALPHA))
@@ -8,8 +8,8 @@ class AtbashCiper:
     def encrypt(cls, message):
         encrypted_message = ''
         for char in message:
-            idx = AtbashCiper.ALPHA.index(char)
-            encrypted_message += AtbashCiper.REVERSE_ALPHA[idx]
+            idx = AtbashCipher.ALPHA.index(char.lower())
+            encrypted_message += AtbashCipher.REVERSE_ALPHA[idx]
 
         return encrypted_message
 
@@ -17,39 +17,39 @@ class AtbashCiper:
     def decrypt(cls, encrypted_message):
         decrypted_message = ''
         for char in encrypted_message:
-            idx = AtbashCiper.REVERSE_ALPHA.index(char)
-            decrypted_message += AtbashCiper.ALPHA[idx]
+            idx = AtbashCipher.REVERSE_ALPHA.index(char.lower())
+            decrypted_message += AtbashCipher.ALPHA[idx]
 
         return decrypted_message
 
 
-class CaesarCiper:
+class CaesarCipher:
     
     ALPHA = 'abcdefghijklmnopqrstuvwxyz'
 
     @classmethod
     def encrypt(cls, message, shift):
-        encrypted_alpha = CaesarCiper.shift_alpha(shift)
+        encrypted_alpha = CaesarCipher.shift_alpha(shift)
         encrypted_message = ''
         for char in message:
-            idx = CaesarCiper.ALPHA.index(char)
+            idx = CaesarCipher.ALPHA.index(char)
             encrypted_message += encrypted_alpha[idx]
 
         return encrypted_message
 
     @classmethod
     def decrypt(cls, encrypted_message, shift):
-        encrypted_alpha = CaesarCiper.shift_alpha(shift)
+        encrypted_alpha = CaesarCipher.shift_alpha(shift)
         decrypted_message = ''
         for char in encrypted_message:
             idx = encrypted_alpha.index(char)
-            decrypted_message += CaesarCiper.ALPHA[idx]
+            decrypted_message += CaesarCipher.ALPHA[idx]
 
         return decrypted_message 
 
     @classmethod
     def shift_alpha(cls, shift):
-        encrypted_alpha = CaesarCiper.ALPHA[shift:] + CaesarCiper.ALPHA[:shift]
+        encrypted_alpha = CaesarCipher.ALPHA[shift:] + CaesarCipher.ALPHA[:shift]
         
         return encrypted_alpha
 
@@ -64,12 +64,12 @@ class Rot13:
 
     @classmethod
     def encrypt(cls, message):
-        encrypted_message = CaesarCiper.encrypt(message, Rot13.SHIFT)       
+        encrypted_message = CaesarCipher.encrypt(message, Rot13.SHIFT)       
         return encrypted_message
 
     @classmethod
     def decrypt(cls, encrypted_message):
-        decrypted_message = CaesarCiper.decrypt(encrypted_message, Rot13.SHIFT)
+        decrypted_message = CaesarCipher.decrypt(encrypted_message, Rot13.SHIFT)
         return decrypted_message
 
 
