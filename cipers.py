@@ -80,7 +80,6 @@ class VigenereCipherSimple:
     @classmethod
     def encrypt(cls, message, key):
         encrypted_message = ''
-        # for m_char in message:
         for message_idx in range(len(message)):
             m_char = message[message_idx]
             if message_idx < len(key):
