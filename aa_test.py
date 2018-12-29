@@ -1,21 +1,34 @@
-from cipers import CaesarCiper, AtbashCiper, VigenereCipherSimple
-string = 'hello'
+
+from ciphers import CaesarCipher, AtbashCipher, VigenereCipherSimple
+
+string = 'I am a test string'
+
+def prettyfi(f):
+    def decorate(cls, string, *args):
+        print('-'*32)
+        f(cls, string, *args)
+        print('-'*32)
+    return decorate
+
+@prettyfi
+def full_print(cls, string, *args):
+    print(f'Cipher: {cls.__name__}')
+    print(f'Original String: {string}')
+    if len(args) == 0:
+        encrypted_str = cls.encrypt(string)
+        decrypted_str = cls.decrypt(encrypted_str)
+    elif len(args) == 1:
+        arg0 = args[0] 
+        encrypted_str = cls.encrypt(string, arg0)
+        decrypted_str = cls.decrypt(encrypted_str, arg0)
+    print(f'Encrypted: {encrypted_str}')
+    print(f'Decrypted: {decrypted_str}')
 
 # Atbash Test
-encrypted_str = AtbashCiper.encrypt(string)
-print(encrypted_str)
-
-decrypted_str = AtbashCiper.decrypt(encrypted_str)
-print(decrypted_str)
-
+full_print(AtbashCipher, string)
 
 # Cesaer Test
-encrypted_str = CaesarCiper.encrypt(string, 5)
-print(encrypted_str)
-
-decrypted_str = CaesarCiper.decrypt(encrypted_str, 5)
-print(decrypted_str)
+full_print(CaesarCipher, string, 5)
 
 # Vigenere Test
-encrypted_str = VigenereCipherSimple.encrypt('sololearn', 'web')
-print(encrypted_str)
+full_print(VigenereCipherSimple, string, 'web')
